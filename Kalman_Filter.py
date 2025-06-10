@@ -262,16 +262,17 @@ if __name__ == '__main__':
         Change the bound of axis depending on its sign.
         If 'max' is set to True, then it is an upper bound. Otherwise, it is a lower bound.
         """
+        c = 1.2
         if max:
             if x > 0:
-                return x*1.1
+                return x*1.2
             else:
-                return x/1.1
+                return x/1.2
         else:
             if x > 0:
-                return x/1.1
+                return x/1.2
             else:
-                return x*1.1
+                return x*1.2
 
     def init_func():
         global n_iter
@@ -316,59 +317,55 @@ if __name__ == '__main__':
 
         n_iter += 1
 
-    # #Add axes on the figure
-    # axamp = fig.add_axes(rect=[0.05, 0.25, 0.0225, 0.33])
+    #Add axes on the figure
+    axamp = fig.add_axes(rect=[0.05, 0.25, 0.0225, 0.33])
 
-    # #Declare the Slider
-    # Noise_x = Slider(
-    #     ax=axamp,
-    #     label="Noise in state evolution",
-    #     valmin=0,
-    #     valmax=10,
-    #     valinit=1,
-    #     orientation="vertical"
-    # )
+    #Declare the Slider
+    Noise_x = Slider(
+        ax=axamp,
+        label="Noise in state evolution",
+        valmin=0,
+        valmax=10,
+        valinit=1,
+        orientation="vertical"
+    )
 
-    # #Callback
-    # def update_Noise_x(val):
-    #     """
-    #     Control the level of noise in the state evolution
-    #     """
-    #     KF.Q *= Noise_x.val
-    #     KF.Q_sq_r *= np.sqrt(Noise_x.val)
+    #Callback
+    def update_Noise_x(val):
+        """
+        Control the level of noise in the state evolution
+        """
+        KF.Q *= Noise_x.val
+        KF.Q_sq_r *= np.sqrt(Noise_x.val)
 
-    # #Declare the callack when the slider is triggered
-    # Noise_x.on_changed(update_Noise_x)
+    #Declare the callack when the slider is triggered
+    Noise_x.on_changed(update_Noise_x)
 
-    # #Add axes on the figure
-    # axmag = fig.add_axes(rect=(0.18, 0.05, 0.25, 0.03))
+    #Add axes on the figure
+    axmag = fig.add_axes(rect=(0.18, 0.05, 0.25, 0.03))
 
-    # #Declare the Slider
-    # Noise_y = Slider(
-    #     ax=axmag,
-    #     label="Noise in measurement",
-    #     valmin=0,
-    #     valmax=10,
-    #     valinit=1,
-    #     orientation="horizontal"
-    # )
+    #Declare the Slider
+    Noise_y = Slider(
+        ax=axmag,
+        label="Noise in measurement",
+        valmin=0,
+        valmax=10,
+        valinit=1,
+        orientation="horizontal"
+    )
 
-    # #Callback
-    # def update_Noise_y(val):
-    #     """
-    #     Control the level of noise in the measurement.
-    #     """
-    #     KF.R *= Noise_y.val
-    #     KF.R_sq_r *= np.sqrt(Noise_y.val)
+    #Callback
+    def update_Noise_y(val):
+        """
+        Control the level of noise in the measurement.
+        """
+        KF.R *= Noise_y.val
+        KF.R_sq_r *= np.sqrt(Noise_y.val)
 
-    # #Declare the callack when the slider is triggered
-    # Noise_y.on_changed(update_Noise_y)
+    #Declare the callack when the slider is triggered
+    Noise_y.on_changed(update_Noise_y)
 
     anim = FuncAnimation(fig, func=update_fig, init_func=init_func, interval = 300, blit=False, frames = 100)
 
-    #Save animation as a movie
-    writergif = PillowWriter(fps=5)
-    anim.save("./gifs/KF_movie_3D.gif", writer = writergif)
-
-    # #Display the plot
-    # plt.show()
+    #Display the plot
+    plt.show()
