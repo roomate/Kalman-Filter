@@ -16,22 +16,25 @@ You can tune the different configurations parameters via your command line inter
 
 ## Results
 The parameters are 
-\begin{align*}
+$$
 F &= \bigg[
 \cos(\pi/3) & -\sin(\pi/3) \\
 \sin(\pi/3) & \cos(\pi/3)
 \bigg]
+
 H &= \bigg[
 1 & 1 \\
 1 & 0 \\
 \bigg]
-Q = \bigg[
+
+Q &= \bigg[
 1 & 0.5 \\
 0.5 & .4 \\
 \bigg]
-R = \bigg[
+
+R &= \bigg[
 .2 & 0 \\
 0 .4 \\
 \bigg]
-\end{align*}
+$$
 and $m\_0 = [1, 0]$.
