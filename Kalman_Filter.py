@@ -1,8 +1,9 @@
 from scipy.stats import norm as normal
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FuncAnimation, PillowWriter
 from matplotlib.widgets import Slider
+import argparse
 
 class Kalman_Filter(object):
     def __init__(self, n, mode="autonomous", F: np.ndarray = None, H: np.ndarray = None, Q: np.ndarray = None, R: np.ndarray = None):
@@ -47,23 +48,18 @@ class Kalman_Filter(object):
         self.x_error = np.array([])
 
         self.y = np.array([[]])
-        
+
         self.m0 = None
         self.C = None #C_k|k
         self.C_post = None #C_k|k-1
         self.s = np.zeros(n)
 
-        self.x_min = None
-        self.x_true_min = None
+        self.min = None
+        self.true_min = None
 
         self.x_max = None
         self.x_true_max = None
 
-        self.y_min = None
-        self.y_true_min = None
-
-        self.y_max = None
-        self.y_true_max = None
 
         self.error_max = 0
 
@@ -90,12 +86,10 @@ class Kalman_Filter(object):
             Q_sq_r = np.linalg.cholesky(Q)
 
         self.x = np.concatenate((self.x, [m0]), axis=-1)
-        self.x_min, self.y_min = m0
-        self.x_max, self.y_max = m0
+        self.min, self.max = m0, m0
 
         self.x_true = np.concatenate((self.x_true, [m0 + Q_sq_r @ normal.rvs(size=self.n)]), axis=-1)
-        self.x_true_min, self.y_true_min = self.x_true[-1]
-        self.x_true_max, self.y_true_max = self.x_true[-1]
+        self.true_min, self.true_max = self.x_true[-1], self.x_true[-1]
 
         x = self.x_true[-1]
         self.y = np.concatenate((self.y, [x @ H.T + R_sq_r @ normal.rvs(size=self.n)]), axis = -1)
@@ -134,16 +128,12 @@ class Kalman_Filter(object):
         self.x_true = np.concatenate((self.x_true, [x @ F.T + s + Q_sq_r @ normal.rvs(size=self.n)]), axis=0)
 
         x = self.x_true[-1]
-        if x[0] < self.x_true_min:
-            self.x_true_min = x[0]
-        elif x[0] > self.x_true_max:
-            self.x_true_max = x[0]
 
-        if x[1] < self.y_true_min:
-            self.y_true_min = x[1]
-        elif x[1] > self.y_true_max:
-            self.y_true_max = x[1]
-
+        for i in range(self.n):
+            if x[i] < self.true_min[i]:
+                self.true_min[i] = x[i]
+            elif x[i] > self.true_max[i]:
+                self.true_max[i] = x[i]
 
         self.y = np.concatenate((self.y, [x @ H.T + R_sq_r @ normal.rvs(size=self.n)]), axis = 0)
 
@@ -174,15 +164,11 @@ class Kalman_Filter(object):
         self.x = np.concatenate((self.x, [x_post + self.C_post @ H.T @ tmp]), axis=0)
 
         x = self.x[-1]
-        if x[0] < self.x_min:
-            self.x_min = x[0]
-        elif x[0] > self.x_max:
-            self.x_max = x[0]
-
-        if x[1] < self.y_min:
-            self.y_min = x[1]
-        elif x[1] > self.y_max:
-            self.y_max = x[1]
+        for i in range(self.n):
+            if x[i] < self.min[i]:
+                self.min[i] = x[i]
+            elif x[i] > self.max[i]:
+                self.max[i] = x[i]
 
         #Update c
         tmp = np.linalg.solve(S, H @ self.C_post)
@@ -214,103 +200,175 @@ class Kalman_Filter(object):
             self.run_non_autonomous(n_iter, F, H, s, Q, R)
 
 if __name__ == '__main__':
-    m0 = np.array([1, 0])
+    
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--mode", default="autonomous", action='store', help="Is the system autonomous ?", choices=["autonomous", "Non-autonomous"])
+    parser.add_argument("-s_x", default=0, action='store', help="Action along x-axis")
+    parser.add_argument("-s_y", default=0, action='store', help="Action along y-axis")
+    parser.add_argument("-n", default=2, action='store', help="dimension of state space", choices = ("2", "3"))
+    args = parser.parse_args()
+
+    n = int(args.n)
+
+    if args.mode == "Non-autonomous":
+        raise ValueError("Non-autonomous mode not yet available.")
+
     s = 0
     n_iter = 0
     theta = np.pi/3
 
-    F = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
-    H = np.array([[1, 1], [1, 0]])
-    Q = np.array([[1, 0.5], [0.5, .4]])
-    R = np.array([[.2, 0], [0, .4]])
+    if n == 2:
+        m0 = np.array([1, 0])
 
-    KF = Kalman_Filter(2, mode="autonomous", F=F, H=H, Q=Q, R=R)
+        F = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
+        H = np.array([[1, 1], [1, 0]])
+        Q = np.array([[1, 0.5], [0.5, .4]])
+        R = np.array([[.2, 0], [0, .4]])
+    elif n == 3:
+        m0 = np.array([1, 0, .5])
+
+        phi = np.pi/6
+        F = np.array([[np.cos(theta), -np.sin(theta), 0], [np.sin(theta), np.cos(theta), 0], [0, 0, 1]]) @ np.array([[np.cos(phi), 0, -np.sin(phi)], [0, 1, 0], [np.sin(phi), 0, np.cos(phi)]])
+        H = np.array([[1, 1, 0], [1, 0, 1], [0, 0, 1]])
+        Q = np.array([[1, 0.5, .2], [0.5, .4, 1], [.2, .4, 1]])
+        R = np.array([[.4, 0, 0], [0, .6, .6], [0, .6, .7]])
+
+    KF = Kalman_Filter(n, mode=args.mode, F=F, H=H, Q=Q, R=R)
     KF.initialize(m0)
 
-    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(10,5))
-    line, = ax[0].plot([], [], '.', c = 'blue', label="x", linestyle = ':', linewidth = .4)
-    line_true, = ax[0].plot([], [], '.', c = 'red', label="x_True", linestyle = ':', linewidth = .4)
-    ax[0].set_title("State of the system & its estimation")
-    ax[0].legend()
+    fig = plt.figure(figsize=(10, 5))
+    if n == 3:
+        ax1 = fig.add_subplot(1, 2, 1, projection="3d")
+        line, = ax1.plot([], [], [], '.', c = 'blue', label="x", linestyle = ':', linewidth = .4)
+        line_true, = ax1.plot([], [], [], '.', c = 'red', label="x_True", linestyle = ':', linewidth = .4)
 
-    line_error, = ax[1].plot([], [], c = 'black', label="relative error")
-    ax[1].set_title("||x - x_True||/||x_True||")
-    ax[1].set_xlabel("N° of iterations")
-    ax[1].legend()
+    elif n == 2:
+        ax1 = fig.add_subplot(1, 2, 1)
+        line, = ax1.plot([], [], '.', c = 'blue', label="x", linestyle = ':', linewidth = .4)
+        line_true, = ax1.plot([], [], '.', c = 'red', label="x_True", linestyle = ':', linewidth = .4)
+
+    ax1.set_title("State of the system & its estimation")
+    ax1.legend()
+
+    ax2 = fig.add_subplot(1, 2, 2)
+    line_error, = ax2.plot([], [], c = 'black', label="relative error")
+    ax2.set_title("||x - x_True||/||x_True||")
+    ax2.set_xlabel("N° of iterations")
+    ax2.legend()
+
+    def change_bound(x: float, max: bool):
+        """
+        Change the bound of axis depending on its sign.
+        If 'max' is set to True, then it is an upper bound. Otherwise, it is a lower bound.
+        """
+        if max:
+            if x > 0:
+                return x*1.1
+            else:
+                return x/1.1
+        else:
+            if x > 0:
+                return x/1.1
+            else:
+                return x*1.1
 
     def init_func():
         global n_iter
 
-        line.set_data(KF.x[:, 0], KF.x[:, 1])
-        line_true.set_data(KF.x_true[:, 0], KF.x_true[:, 1])
-        line_error.set_data(range(len(KF.x_error)), KF.x_error)
-        ax[0].set_xlim(-10, 10)
-        ax[0].set_ylim(-10, 10)
+        ax1.set_xlim(-10, 10)
+        ax1.set_ylim(-10, 10)
+        if KF.n == 2:
+            line.set_data(*[KF.x[:,i] for i in range(KF.x.shape[1])])
+            line_true.set_data(*[KF.x_true[:,i] for i in range(KF.x_true.shape[1])])
+        elif KF.n == 3:
+            ax1.set_zlim(-10, 10)
+            line.set_data_3d(*[KF.x[:,i] for i in range(KF.x.shape[1])])
+            line_true.set_data_3d(*[KF.x_true[:,i] for i in range(KF.x_true.shape[1])])
 
-        ax[1].set_ylim(0, .6)
-        ax[1].set_xlim(0, 100)
+        line_error.set_data(range(len(KF.x_error)), KF.x_error)
+
+        ax2.set_ylim(0, .6)
+        ax2.set_xlim(0, 100)
 
         n_iter += 1
 
     def update_fig(*args):
         global n_iter
         KF.run(1)
-        line.set_data(KF.x[:, 0], KF.x[:, 1])
-        line_true.set_data(KF.x_true[:, 0], KF.x_true[:, 1])
-        ax[0].set_xlim(np.min((-10, KF.x_true_min - 1, KF.x_min - 1)), np.max((10, KF.x_true_max + 1, KF.x_max + 1)))
-        ax[0].set_ylim(np.min((-10, KF.x_true_min - 1, KF.x_min - 1)), np.max((10, KF.x_true_max + 1, KF.x_max + 1)))
+        
+        ax1.set_xlim(np.min((-10, change_bound(KF.true_min[0], 0), change_bound(KF.min[0], 0))), np.max((10, change_bound(KF.true_max[0], 1), change_bound(KF.max[0], 1))))
+        ax1.set_ylim(np.min((-10, change_bound(KF.true_min[1], 0), change_bound(KF.min[1], 0))), np.max((10, change_bound(KF.true_max[1], 1), change_bound(KF.max[1], 1))))
+        if KF.n == 3:
+            ax1.set_zlim(np.min((-10, KF.true_min[2] - 1, KF.min[2] - 1)), np.max((10, KF.true_max[2] + 1, KF.max[2] + 1)))
+            line.set_data_3d(*[KF.x[:,i] for i in range(KF.x.shape[1])])
+            line_true.set_data_3d(*[KF.x_true[:,i] for i in range(KF.x_true.shape[1])])
+        elif KF.n == 2:
+            line.set_data(*[KF.x[:,i] for i in range(KF.x.shape[1])])
+            line_true.set_data(*[KF.x_true[:,i] for i in range(KF.x_true.shape[1])])
 
         if KF.x_error.shape[0] > 100:
             KF.x_error = np.delete(KF.x_error, 0)
         line_error.set_data(range(np.maximum(0, n_iter - 100), np.maximum(len(KF.x_error), n_iter)), KF.x_error)
 
-        ax[1].set_ylim(0, np.maximum(.6, KF.error_max + .1))
-        ax[1].set_xlim(np.maximum(0, n_iter - 100), np.maximum(100, n_iter))
+        ax2.set_ylim(0, np.maximum(.6, KF.error_max*1.1))
+        ax2.set_xlim(np.maximum(0, n_iter - 100), np.maximum(100, n_iter))
 
         n_iter += 1
-    
 
-    #Add axes on the figure
-    axamp = fig.add_axes(rect=[0.05, 0.25, 0.0225, 0.33])
+    # #Add axes on the figure
+    # axamp = fig.add_axes(rect=[0.05, 0.25, 0.0225, 0.33])
 
-    #Declare the Slider
-    Sx = Slider(
-        ax=axamp,
-        label="Control along x",
-        valmin=-2,
-        valmax=2,
-        valinit=0,
-        orientation="vertical"
-    )
+    # #Declare the Slider
+    # Noise_x = Slider(
+    #     ax=axamp,
+    #     label="Noise in state evolution",
+    #     valmin=0,
+    #     valmax=10,
+    #     valinit=1,
+    #     orientation="vertical"
+    # )
 
-    #Callback
-    def update_Sx(val):
-        KF.s[0] = Sx.val
+    # #Callback
+    # def update_Noise_x(val):
+    #     """
+    #     Control the level of noise in the state evolution
+    #     """
+    #     KF.Q *= Noise_x.val
+    #     KF.Q_sq_r *= np.sqrt(Noise_x.val)
 
-    #Declare the callack when the slider is triggered
-    Sx.on_changed(update_Sx)
+    # #Declare the callack when the slider is triggered
+    # Noise_x.on_changed(update_Noise_x)
 
-    #Add axes on the figure
-    ayamp = fig.add_axes(rect=[0.0, 0.25, 0.0225, 0.33])
+    # #Add axes on the figure
+    # axmag = fig.add_axes(rect=(0.18, 0.05, 0.25, 0.03))
 
-    #Declare the Slider
-    Sy = Slider(
-        ax=ayamp,
-        label="Control along y",
-        valmin=-2,
-        valmax=2,
-        valinit=0,
-        orientation="vertical"
-    )
+    # #Declare the Slider
+    # Noise_y = Slider(
+    #     ax=axmag,
+    #     label="Noise in measurement",
+    #     valmin=0,
+    #     valmax=10,
+    #     valinit=1,
+    #     orientation="horizontal"
+    # )
 
-    #Callback
-    def update_Sy(val):
-        KF.s[1] = Sy.val
+    # #Callback
+    # def update_Noise_y(val):
+    #     """
+    #     Control the level of noise in the measurement.
+    #     """
+    #     KF.R *= Noise_y.val
+    #     KF.R_sq_r *= np.sqrt(Noise_y.val)
 
-    #Declare the callack when the slider is triggered
-    Sy.on_changed(update_Sy)
+    # #Declare the callack when the slider is triggered
+    # Noise_y.on_changed(update_Noise_y)
 
-    anim = FuncAnimation(fig, func=update_fig, init_func=init_func, interval = 300, blit=False)
+    anim = FuncAnimation(fig, func=update_fig, init_func=init_func, interval = 300, blit=False, frames = 100)
 
-    #Display the plot
-    plt.show()
+    #Save animation as a movie
+    writergif = PillowWriter(fps=5)
+    anim.save("./gifs/KF_movie_3D.gif", writer = writergif)
+
+    # #Display the plot
+    # plt.show()
