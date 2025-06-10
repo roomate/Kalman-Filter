@@ -49,7 +49,7 @@ $m\_0 = [1, 0]$, $s = [0, 0]$, and $\theta = \pi/3$.
 ```math
 F = \begin{pmatrix}
 \cos(\theta)\cos(\phi) & -\sin(\pi/3) & -\cos(\theta)\sin(\phi)\\
-\sin(\theta) \cos(\phi) & \cos(\theta) & -\sin^2(\theta) \\
+\sin(\theta) \cos(\phi) & \cos(\theta) & -\sin(\theta)\sin(\phi) \\
 \sin(\phi) & 0 & \cos(\phi)
 \end{pmatrix},
 
