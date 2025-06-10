@@ -7,31 +7,31 @@ The kalman filter is a famous estimation technique to build estimators of the st
 
 Type the following commands in your terminal to install the project locally:
 `code`
-mkdir KF\_dir; cd KF\_dir; git clone ;
+mkdir KF\_dir; cd KF\_dir; git clone git@github.com:roomate/Kalman-Filter.git;
 `code`
 
 ## Running the code
-You can tune the different configurations parameters via your command line interface:
+You can tune the different configurations parameters via your command line interface with the flags:
 
 
 ## Results
 The parameters are 
 \begin{align*}
-F &= \begin{pmatrix}
+F &= \bigg[
 \cos(\pi/3) & -\sin(\pi/3) \\
 \sin(\pi/3) & \cos(\pi/3)
-\end{pmatrix}
-H &= \begin{pmatrix}
+\bigg]
+H &= \bigg[
 1 & 1 \\
 1 & 0 \\
-\end{pmatrix}
-Q = \begin{pmatrix}
+\bigg]
+Q = \bigg[
 1 & 0.5 \\
 0.5 & .4 \\
-\end{pmatrix}
-R = \begin{pmatrix}
+\bigg]
+R = \bigg[
 .2 & 0 \\
 0 .4 \\
-\end{pmatrix}
+\bigg]
 \end{align*}
 and $m\_0 = [1, 0]$.
