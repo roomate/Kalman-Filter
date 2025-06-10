@@ -17,12 +17,12 @@ You can tune the different configurations parameters via your command line inter
 ## Results
 
 ### In 2D
-The parameters are
+The parameters are:
  
 ```math
 F = \begin{pmatrix}
-\cos(\pi/3) & -\sin(\pi/3) \\
-\sin(\pi/3) & \cos(\pi/3)
+\cos(\theta) & -\sin(\theta) \\
+\sin(\theta) & \cos(\theta)
 \end{pmatrix},
 
 H = \begin{pmatrix}
@@ -40,10 +40,38 @@ R = \begin{pmatrix}
 0 & .4 \\
 \end{pmatrix},
 ``` 
-$m\_0 = [1, 0]$, and $s = [0, 0]$.
+$m\_0 = [1, 0]$, $s = [0, 0]$, and $\theta = \pi/3$.
 
 ![](./gifs/KF_movie.gif)
 
 ### In 3D
+ 
+```math
+F = \begin{pmatrix}
+\cos(\theta)\cos(\phi) & -\sin(\pi/3) & -\cos(\theta)\sin(\phi)\\
+\sin(\theta) \cos(\phi) & \cos(\theta) & -\sin^2(\theta) \\
+\sin(\phi) & 0 & \cos(\phi)
+\end{pmatrix},
+
+H = \begin{pmatrix}
+1 & 1 & 0\\
+1 & 0 & 1\\
+0 & 0 & 1\\
+\end{pmatrix},
+
+Q = \begin{pmatrix}
+1 & 0.5 & .2\\
+0.5 & .4 & 1\\
+.2 & .4 & 1\\
+\end{pmatrix},
+
+R = \begin{pmatrix}
+.4 & 0 & 0\\
+0 & .6 & .6\\
+0 & .6 & .7\\
+\end{pmatrix},
+``` 
+$m\_0 = [1, 0]$, $s = [0, 0]$, $\theta = \pi/3$ and $\phi = \pi/6$.
+
 
 ![](./gifs/KF_movie_3D.gif)
