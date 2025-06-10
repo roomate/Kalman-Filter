@@ -1,0 +1,37 @@
+# Kalman Filter
+
+## Description
+The kalman filter is a famous estimation technique to build estimators of the state vector $x$. The underlying dynamics and observations schemes are known, but stochastic; perturbed by a gaussian noise with known covariance matrices. Give a look at the [note](note_KF.md) to make yourself a clear idea.
+
+## Installation
+
+Type the following commands in your terminal to install the project locally:
+`code`
+mkdir KF\_dir; cd KF\_dir; git clone ;
+`code`
+
+## Running the code
+You can tune the different configurations parameters via your command line interface:
+
+
+## Results
+The parameters are 
+\begin{align*}
+F &= \begin{pmatrix}
+\cos(\pi/3) & -\sin(\pi/3) \\
+\sin(\pi/3) & \cos(\pi/3)
+\end{pmatrix}
+H &= \begin{pmatrix}
+1 & 1 \\
+1 & 0 \\
+\end{pmatrix}
+Q = \begin{pmatrix}
+1 & 0.5 \\
+0.5 & .4 \\
+\end{pmatrix}
+R = \begin{pmatrix}
+.2 & 0 \\
+0 .4 \\
+\end{pmatrix}
+\end{align*}
+and $m\_0 = [1, 0]$.
