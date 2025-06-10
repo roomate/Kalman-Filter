@@ -4,9 +4,8 @@ Kalman filters are a class of algorithm for estimation under uncertainty, or pro
 
 - The discrete model: $\mathcal{X} \equiv \mathbb{R}^n$ and $\mathcal{Y} \equiv \mathbb{R}^m$.
 ```math
-x_{k+1} = F_k x_k + s_k + \xi_k, \, k \geq 0, \\
-
-y_k = H_k x_k + \eta_k.
+x_{k+1} = F_k x_k + s_k + \xi_k,
+y_k = H_k x_k + \eta_k, \, \, k \geq 0.
 ```
 
 $F\_k$ and $H\_k$ are respectively evolution and observation operators. $s\_k$ is a deterministic control parameter and $\xi\_k \sim N(0, Q\_k)$, $\eta\_k \sim N(0, R\_k)$ are independant random variables. Initial state is $x\_0 = m\_0 + \xi\_0$, with $m\_0 \in \mathcal{X}$ known, and $\hat x_{0|0} = m\_0$. Also, $\forall k \in \mathbb{N}, F\_k \in \mathbb{R}^{n \times n}, H\_k \in \mathbb{R}^{m \times n}, Q\_k \in \mathbb{S}\_+^{n \times n} \, \text{and} \, R\_k \in \mathbb{S}\_+^{m \times m}$. Kalman filter aims to propose an estimator $\hat{x}\_{k+1}$ of $x_{k+1}$ knowing the observations $y\_1, \cdots, y\_k, y_{k+1}$ of the $\textbf{true}$ state via an iterative procedure in two steps:
@@ -33,7 +32,6 @@ If $F\_k$, $H\_k$, $Q\_k$ and $R\_k$ do not actually depend on $k$, the system i
 
 - The continuous model
 ```math
-\begin{displaymath}
 \dot x(t) = Ax(t) + Bu(t) + G\xi(t), \\
 
 y(t) = C x(t) + E\mu(t)
