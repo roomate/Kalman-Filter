@@ -21,21 +21,23 @@ The parameters are
 F = \begin{pmatrix}
 \cos(\pi/3) & -\sin(\pi/3) \\
 \sin(\pi/3) & \cos(\pi/3)
-\end{pmatrix}
+\end{pmatrix},
 
 H = \begin{pmatrix}
 1 & 1 \\
 1 & 0 \\
-\end{pmatrix}
+\end{pmatrix},
 
 Q = \begin{pmatrix}
 1 & 0.5 \\
 0.5 & .4 \\
-\end{pmatrix}
+\end{pmatrix},
 
 R = \begin{pmatrix}
 .2 & 0 \\
 0 .4 \\
-\end{pmatrix}
+\end{pmatrix},
 ```
-and $m\_0 = [1, 0]$.
+, $m\_0 = [1, 0]$ and $s = [0, 0]$.
+
+![](KF_movie.gif)
