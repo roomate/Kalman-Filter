@@ -28,11 +28,13 @@ where $S\_k = H\_k C_{k|k - 1}H\_k^T + R\_k$, and that's it, everything is set-u
 If $F\_k$, $H\_k$, $Q\_k$ and $R\_k$ do not actually depend on $k$, the system is said to be autonomous.
 
 - The continuous model
-```math
+$
+\begin{displaymath}
 \dot x(t) = Ax(t) + Bu(t) + G\xi(t), \\
 
 y(t) = C x(t) + E\mu(t)
-```
+\end{displaymath}
+$
 
 Reference:
 
