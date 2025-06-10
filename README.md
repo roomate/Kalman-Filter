@@ -15,6 +15,8 @@ You can tune the different configurations parameters via your command line inter
 
 
 ## Results
+
+### In 2D
 The parameters are
  
 ```math
@@ -35,9 +37,13 @@ Q = \begin{pmatrix}
 
 R = \begin{pmatrix}
 .2 & 0 \\
-0 .4 \\
+0 & .4 \\
 \end{pmatrix},
-```
-, $m\_0 = [1, 0]$ and $s = [0, 0]$.
+``` 
+$m\_0 = [1, 0]$, and $s = [0, 0]$.
 
-![](KF_movie.gif)
+![](./gifs/KF_movie.gif)
+
+### In 3D
+
+![](./gifs/KF_movie_3D.gif)
