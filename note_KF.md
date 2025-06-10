@@ -23,13 +23,13 @@ Assuming established that $x_{k-1|k-1} \sim N(\hat{x}\_{k-1|k-1}, C_{k-1|k-1})$,
 $$
 x_{k|\{k - 1\} \cup \{y\_k\}} = x_{k|k} \sim N(\underbrace{\hat{x}\_{k | k -1} + C_{k|k - 1}H\_k^\top S\_k^{-1}(y\_k - H\_k \hat{x}\_{k|k - 1})}_{\hat{x}\_{k|k}}, \underbrace{C_{k|k - 1} - C_{k|k - 1}H\_k^TS\_k^{-1}H\_kC_{k|k-1}}_{C_{k|k}}),
 $$
-where $S\_k = H\_k C_{k|k - 1}H\_k^T + R\_k$, and that's it, everything is set-up. At the end, the parameters of the model are $(s\_k)_{k \in \mathbb{N}}$, $(F_k)_{k \in \mathbb{N}}$, $(H\_k)_{k \in \mathbb{N}}$, $(Q_k)_{k \in \mathbb{N}}$, $(R\_k)_{k \in \mathbb{N}}$, and $m_0$. The control $(s_k)_{k \in \mathbb{N}}$ could for example be used to minimize a certain criteria in an optimal control context.
+where $S\_k = H\_k C_{k|k - 1}H\_k^T + R\_k$, and that's it, everything is set-up. At the end, the parameters of the model are $(s\_k)\_{k \in \mathbb{N}}$, $(F\_k)\_{k \in \mathbb{N}}$, $(H\_k)\_{k \in \mathbb{N}}$, $(Q\_k)\_{k \in \mathbb{N}}$, $(R\_k)\_{k \in \mathbb{N}}$, and $m\_0$. The control $(s\_k)\_{k \in \mathbb{N}}$ could for example be used to minimize a certain criteria in an optimal control context.
 
 If $F\_k$, $H\_k$, $Q\_k$ and $R\_k$ do not actually depend on $k$, the system is said to be autonomous.
 
 - The continuous model
 ```math
-\dot x(t) = Ax(t) + Bu(t) + G\xi(t) \\
+\dot x(t) = Ax(t) + Bu(t) + G\xi(t), \\
 
 y(t) = C x(t) + E\mu(t)
 ```
