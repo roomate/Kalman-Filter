@@ -13,7 +13,9 @@ mkdir KF\_dir; cd KF\_dir; git clone git@github.com:roomate/Kalman-Filter.git;
 ## Running the code
 You can tune the different configurations parameters via your command line interface with the flags:
 
+- 
 
+Only the `autonomous` mode can be activated for now. For the `Non-autonomous` case, there is still some work to do, e.g. how to pass the matrices $(F\_k)\_{k \in \{1, \cdots, N\}}, (H\_k)\_{k \in \{1, \cdots, N\}}, (Q\_k)\_{k \in \{1, \cdots, N\}}, (R\_k)\_{k \in \{1, \cdots, N\}}$, where $N$ is the number of iterations, in a configuration file.
 ## Results
 
 ### In 2D
