@@ -13,9 +13,15 @@ mkdir KF\_dir; cd KF\_dir; git clone git@github.com:roomate/Kalman-Filter.git;
 ## Running the code
 You can tune the different configurations parameters via your command line interface with the flags:
 
-- 
+- `--mode`: State if the system is autonomous, or not. Default: 'autonomous'.
+- `--s_x`: control along x-axis. Default: 0.
+- `--s_y`: control along y-axis. Default: 0.
+- `-n`: dimension of space. Default: 2.
 
-Only the `autonomous` mode can be activated for now. For the `Non-autonomous` case, there is still some work to do, e.g. how to pass the matrices $(F\_k)\_{k \in \{1, \cdots, N\}}, (H\_k)\_{k \in \{1, \cdots, N\}}, (Q\_k)\_{k \in \{1, \cdots, N\}}, (R\_k)\_{k \in \{1, \cdots, N\}}$, where $N$ is the number of iterations, in a configuration file.
+Only the `autonomous` mode can be activated for now. For the `Non-autonomous` case, there is still some work to do, e.g. how to pass the matrices $(F\_k)\_{k \in {1, \cdots, N}}, (H\_k)\_{k \in {1, \cdots, N}}, (Q\_k)\_{k \in {1, \cdots, N}}, (R\_k)\_{k \in {1, \cdots, N}}$, where $N$ is the number of iterations, in a configuration file.
+
+When launching the code, you should see appear two slidebars; the vertical and horizontal bars control respectively the strength of the noise injected in the evolution equation and the measurement equation.
+
 ## Results
 
 ### In 2D
