@@ -6,9 +6,9 @@ The kalman filter is a famous estimation technique to build estimators of the st
 ## Installation
 
 Type the following commands in your terminal to install the project locally:
-`code`
+```code
 mkdir KF\_dir; cd KF\_dir; git clone git@github.com:roomate/Kalman-Filter.git;
-`code`
+```
 
 ## Running the code
 You can tune the different configurations parameters via your command line interface with the flags:
@@ -17,25 +17,25 @@ You can tune the different configurations parameters via your command line inter
 ## Results
 The parameters are
  
-$$
-F = \bigg[
+```math
+F = \begin{pmatrix}
 \cos(\pi/3) & -\sin(\pi/3) \\
 \sin(\pi/3) & \cos(\pi/3)
-\bigg]
+\end{pmatrix}
 
-H = \bigg[
+H = \begin{pmatrix}
 1 & 1 \\
 1 & 0 \\
-\bigg]
+\end{pmatrix}
 
-Q = \bigg[
+Q = \begin{pmatrix}
 1 & 0.5 \\
 0.5 & .4 \\
-\bigg]
+\end{pmatrix}
 
-R = \bigg[
+R = \begin{pmatrix}
 .2 & 0 \\
 0 .4 \\
-\bigg]
-$$
+\end{pmatrix}
+```
 and $m\_0 = [1, 0]$.
