@@ -5,6 +5,7 @@ Kalman filters are a class of algorithm for estimation under uncertainty, or pro
 - The discrete model: $\mathcal{X} \equiv \mathbb{R}^n$ and $\mathcal{Y} \equiv \mathbb{R}^m$.
 ```math
 x_{k+1} = F_k x_k + s_k + \xi_k, \, k \geq 0, \\
+
 y_k = H_k x_k + \eta_k.
 ```
 
@@ -29,6 +30,7 @@ If $F\_k$, $H\_k$, $Q\_k$ and $R\_k$ do not actually depend on $k$, the system i
 - The continuous model
 ```math
 \dot x(t) = Ax(t) + Bu(t) + G\xi(t) \\
+
 y(t) = C x(t) + E\mu(t)
 ```
 
