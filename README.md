@@ -79,7 +79,7 @@ R = \begin{pmatrix}
 0 & .6 & .7\\
 \end{pmatrix},
 ``` 
-$m\_0 = [1, 0]$, $s = [0, 0]$, $\theta = \pi/3$ and $\phi = \pi/6$.
+$m\_0 = [1, 0, .5]$, $s = [0, 0]$, $\theta = \pi/3$ and $\phi = \pi/6$.
 
 
 ![](./gifs/KF_movie_3D.gif)
