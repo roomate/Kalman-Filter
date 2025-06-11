@@ -1,7 +1,7 @@
 # Kalman Filter
 
 ## Description
-The kalman filter is a famous estimation technique to build estimators of the state vector $x$. The underlying dynamics and observations schemes are known, but stochastic; perturbed by a gaussian noise with known covariance matrices. Give a look at the [note](note_KF.md) to make yourself a clear idea.
+The kalman filter is a famous estimation technique to build estimators of the state vector $x$. The underlying dynamics and observations schemes are known, but stochastic; perturbed by a gaussian noise with known covariance matrix. Give a look at the [note](note_KF.md) to make yourself a clear idea.
 
 ## Installation
 
@@ -11,12 +11,18 @@ mkdir KF\_dir; cd KF\_dir; git clone git@github.com:roomate/Kalman-Filter.git;
 ```
 
 ## Running the code
+
+Run the code by promoting in your command-line interface:
+```code
+python3 Kalman_filter
+```
+, optionally followed by flags described below.
 You can tune the different configurations parameters via your command line interface with the flags:
 
-- `--mode`: State if the system is autonomous, or not. Default: 'autonomous'.
-- `--s_x`: control along x-axis. Default: 0.
-- `--s_y`: control along y-axis. Default: 0.
-- `-n`: dimension of space. Default: 2.
+- `--mode`$\textit{(str,optional)}$-state if the system is autonomous, or not. Default: 'autonomous'.
+- `--s_x`$\textit{(float, optional)}$-control along x-axis. Default: 0.
+- `--s_y`$\textit{(float, optional)}$-control along y-axis. Default: 0.
+- `-n`$\textit{(int, optional)}$-dimension of space. Default: 2.
 
 Only the `autonomous` mode can be activated for now. For the `Non-autonomous` case, there is still some work to do, e.g. how to pass the matrices $(F\_k)\_{k \in \\{1, \cdots, N\\}}, (H\_k)\_{k \in \\{1, \cdots, N\\}}, (Q\_k)\_{k \in \\{1, \cdots, N\\}}, (R\_k)\_{k \in \\{1, \cdots, N\\}}$, where $N$ is the number of iterations, in a configuration file.
 
