@@ -18,7 +18,7 @@ You can tune the different configurations parameters via your command line inter
 - `--s_y`: control along y-axis. Default: 0.
 - `-n`: dimension of space. Default: 2.
 
-Only the `autonomous` mode can be activated for now. For the `Non-autonomous` case, there is still some work to do, e.g. how to pass the matrices $(F\_k)\_{k \in {1, \cdots, N}}, (H\_k)\_{k \in {1, \cdots, N}}, (Q\_k)\_{k \in {1, \cdots, N}}, (R\_k)\_{k \in {1, \cdots, N}}$, where $N$ is the number of iterations, in a configuration file.
+Only the `autonomous` mode can be activated for now. For the `Non-autonomous` case, there is still some work to do, e.g. how to pass the matrices $(F\_k)\_{k \in \\{1, \cdots, N\\}}, (H\_k)\_{k \in \\{1, \cdots, N\\}}, (Q\_k)\_{k \in \\{1, \cdots, N\\}}, (R\_k)\_{k \in \\{1, \cdots, N\\}}$, where $N$ is the number of iterations, in a configuration file.
 
 When launching the code, you should see appear two slidebars; the vertical and horizontal bars control respectively the strength of the noise injected in the evolution equation and the measurement equation.
 
@@ -56,7 +56,7 @@ $m\_0 = [1, 0]$, $s = [0, 0]$, and $\theta = \pi/3$.
  
 ```math
 F = \begin{pmatrix}
-\cos(\theta)\cos(\phi) & -\sin(\pi/3) & -\cos(\theta)\sin(\phi)\\
+\cos(\theta)\cos(\phi) & -\sin(\theta) & -\cos(\theta)\sin(\phi)\\
 \sin(\theta) \cos(\phi) & \cos(\theta) & -\sin(\theta)\sin(\phi) \\
 \sin(\phi) & 0 & \cos(\phi)
 \end{pmatrix},
