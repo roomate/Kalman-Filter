@@ -5,9 +5,10 @@ The kalman filter is a famous estimation technique to build estimators of the st
 
 ## Installation
 
-Type the following commands in your terminal to install the project locally:
+Type the following commands in your terminal to clone the project locally:
 ```code
-mkdir KF\_dir; cd KF\_dir; git clone git@github.com:roomate/Kalman-Filter.git;
+git clone git@github.com:roomate/Kalman-Filter.git;
+
 ```
 
 ## Running the code
@@ -19,7 +20,7 @@ python3 Kalman_filter
 , optionally followed by flags described below.
 You can tune the different configurations parameters via your command line interface with the flags:
 
-- `--mode`$\textit{(str,optional)}$-state if the system is autonomous, or not. Default: 'autonomous'.
+- `--mode`$\textit{(str, optional)}$-state if the system is autonomous, or not. Default: 'autonomous'.
 - `--s_x`$\textit{(float, optional)}$-control along x-axis. Default: 0.
 - `--s_y`$\textit{(float, optional)}$-control along y-axis. Default: 0.
 - `-n`$\textit{(int, optional)}$-dimension of space. Default: 2.
